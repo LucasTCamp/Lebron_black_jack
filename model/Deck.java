@@ -29,4 +29,6 @@ public class Deck {
     public Card draw() {
         return cards.isEmpty() ? null : cards.remove(0);
     }
+
+    public boolean isEmpty() { return cards.isEmpty(); }
 }
