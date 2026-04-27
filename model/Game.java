@@ -8,14 +8,19 @@ public class Game {
     private final Player player;
     private final Player dealer;
     private final Deck deck;
+    private final Shop shop;
+    private final Collection collection;
 
     public Game() {
-        this.player = new Player(1000); // Starting cash
-        this.dealer = new Player(0);    
+        this.player = new Player(1000);
+        this.dealer = new Player(0);
         this.deck = new Deck();
+        this.shop = new Shop();
+        this.collection = new Collection();
     }
 
     public void startRound() {
+        if (deck.isEmpty()) deck.shuffle();
         player.getHand().clear();
         dealer.getHand().clear();
         player.addCard(deck.draw());
@@ -24,9 +29,9 @@ public class Game {
         dealer.addCard(deck.draw());
     }
 
-    public Player getPlayer() { return player; }
-    public Player getDealer() { return dealer; }
-    
-    // ADD THIS PART TO FIX THE ERROR
-    public Deck getDeck() { return deck; }
+    public Player getPlayer()         { return player; }
+    public Player getDealer()         { return dealer; }
+    public Deck getDeck()             { return deck; }
+    public Shop getShop()             { return shop; }
+    public Collection getCollection() { return collection; }
 }
