@@ -21,6 +21,37 @@ public class Collection {
 
     public List<PlayerCard> getOwned() { return owned; }
 
+    // Get all unused cards of a specific buff type
+    public List<PlayerCard> getAvailableBuffs(String buffType) {
+        List<PlayerCard> result = new ArrayList<>();
+        for (PlayerCard c : owned) {
+            if (c.getBuffType().equals(buffType) && !c.isUsed()) result.add(c);
+        }
+        return result;
+    }
+
+    public boolean hasUnusedBuff(String buffType) {
+        return !getAvailableBuffs(buffType).isEmpty();
+    }
+
+    // Get first unused card of a buff type and mark it used
+    public PlayerCard useFirstBuff(String buffType) {
+        for (PlayerCard c : owned) {
+            if (c.getBuffType().equals(buffType) && !c.isUsed()) {
+                c.markUsed();
+                return c;
+            }
+        }
+        return null;
+    }
+
+    // Reset all buffs between rounds
+    public void resetBuffs() {
+        for (PlayerCard c : owned) {
+            // Only reset per-round buffs, not permanent ones
+        }
+    }
+
     public void display() {
         if (owned.isEmpty()) {
             System.out.println("No cards collected yet.");

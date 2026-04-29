@@ -23,6 +23,7 @@ public class Game {
         if (deck.isEmpty()) deck.shuffle();
         player.getHand().clear();
         dealer.getHand().clear();
+        player.resetBoost();
         player.addCard(deck.draw());
         dealer.addCard(deck.draw());
         player.addCard(deck.draw());

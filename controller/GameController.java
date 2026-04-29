@@ -91,7 +91,8 @@ public class GameController {
         } else {
             game.getPlayer().adjustBalance(-card.getPrice());
             game.getCollection().add(card);
-            view.displayMessage("Got " + card.getName() + "! Balance: $" + game.getPlayer().getBalance());
+            view.displayMessage("Got " + card.getName() + "! [" + card.getBuffDescription() + "]");
+            view.displayMessage("Balance: $" + game.getPlayer().getBalance());
         }
     }
 
@@ -114,17 +115,59 @@ public class GameController {
 
         game.startRound();
 
+        // Check for insurance before player turn
+        boolean insuranceActive = false;
+        if (game.getCollection().hasUnusedBuff("INSURANCE")) {
+            view.displayMessage("You have Wemby's Insurance! Use it this round? (y/n)");
+            if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
+                game.getCollection().useFirstBuff("INSURANCE");
+                insuranceActive = true;
+                view.displayMessage("Insurance active — one bust saved!");
+            }
+        }
+
+        // Player turn
         while (!game.getPlayer().isBust()) {
             view.displayMessage("\nYour Hand: " + game.getPlayer().getHand());
             view.displayMessage("Your Score: " + game.getPlayer().calculateScore());
-            view.displayMessage("Hit or Stay? (h/s)");
 
-            String action = scanner.nextLine();
+            // Show available buff options
+            String options = "Hit or Stay? (h/s)";
+            if (game.getCollection().hasUnusedBuff("SCORE_BOOST"))
+                options += " or Boost? (b)";
+            if (game.getCollection().hasUnusedBuff("FREE_HIT"))
+                options += " or Free Hit? (f)";
+            view.displayMessage(options);
+
+            String action = scanner.nextLine().trim();
+
             if (action.equalsIgnoreCase("h")) {
                 game.getPlayer().addCard(game.getDeck().draw());
+
+            } else if (action.equalsIgnoreCase("b") && game.getCollection().hasUnusedBuff("SCORE_BOOST")) {
+                PlayerCard used = game.getCollection().useFirstBuff("SCORE_BOOST");
+                game.getPlayer().applyScoreBoost((int) used.getBuffValue());
+                view.displayMessage(used.getName() + " activated! +" + (int) used.getBuffValue() + " to your score.");
+
+            } else if (action.equalsIgnoreCase("f") && game.getCollection().hasUnusedBuff("FREE_HIT")) {
+                game.getCollection().useFirstBuff("FREE_HIT");
+                int scoreBefore = game.getPlayer().calculateScore();
+                game.getPlayer().addCard(game.getDeck().draw());
+                view.displayMessage("Donovan Mitchell activated! Free hit — no bust risk.");
+                // If they would bust, undo the bust
+                if (game.getPlayer().isBust()) {
+                    game.getPlayer().removeScoreBoost(game.getPlayer().calculateScore() - scoreBefore);
+                    view.displayMessage("Would have busted — Mitchell saved you! Score stays at " + scoreBefore);
+                }
             } else {
                 break;
             }
+        }
+
+        // Insurance saves a bust
+        if (game.getPlayer().isBust() && insuranceActive) {
+            view.displayMessage("BUSTED — but Wemby's Insurance saved you! Continuing...");
+            game.getPlayer().clearBust();
         }
 
         if (game.getPlayer().isBust()) {
@@ -134,19 +177,32 @@ public class GameController {
             return;
         }
 
+        // Dealer turn
         view.displayMessage("\nDealer's Turn...");
         while (dealerStrategy.shouldHit(game.getDealer().calculateScore())) {
             game.getDealer().addCard(game.getDeck().draw());
         }
 
+        // Results — check for multiplier
         int pScore = game.getPlayer().calculateScore();
         int dScore = game.getDealer().calculateScore();
         view.displayMessage("Dealer Hand: " + game.getDealer().getHand());
         view.displayMessage("Dealer Score: " + dScore);
 
+        double multiplier = 1.0;
+        if (game.getCollection().hasUnusedBuff("MULTIPLIER")) {
+            view.displayMessage("You have a payout multiplier! Use it? (y/n)");
+            if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
+                PlayerCard used = game.getCollection().useFirstBuff("MULTIPLIER");
+                multiplier = used.getBuffValue();
+                view.displayMessage(used.getName() + " activated! " + multiplier + "x payout!");
+            }
+        }
+
         if (dScore > 23 || pScore > dScore) {
-            game.getPlayer().adjustBalance(bet);
-            view.displayMessage("You Win! +$" + bet);
+            int winnings = (int)(bet * multiplier);
+            game.getPlayer().adjustBalance(winnings);
+            view.displayMessage("You Win! +$" + winnings);
         } else if (dScore > pScore) {
             game.getPlayer().adjustBalance(-bet);
             view.displayMessage("Dealer Wins! -$" + bet);
