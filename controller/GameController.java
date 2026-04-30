@@ -8,15 +8,32 @@ import view.ConsoleView;
 import java.util.Scanner;
 
 /**
- * Handles the game loop and user input.
- * @author Lucas & Masoud
+ * The GameController class manages the primary game loop, user interactions, 
+ * and high-level game logic for Lebron Black Jack.
+ * * It acts as the mediator between the Game model and the ConsoleView,
+ * handling state transitions such as betting, player turns, dealer turns, 
+ * and shop transactions.
+ * * @author Lucas & Masoud
  */
 public class GameController {
+    /** The core game engine containing player data, deck, and collection. */
     private Game game;
+    
+    /** The view component responsible for displaying output to the user. */
     private ConsoleView view;
+    
+    /** Scanner for capturing user input from the terminal. */
     private Scanner scanner;
+    
+    /** Strategy object determining how the dealer hits or stays. */
     private DealerStrategy dealerStrategy;
 
+    /**
+     * Constructs a new GameController with the specified model and view.
+     * Initializes the dealer with a {@link model.strategy.SafeStrategy}.
+     * * @param game The game model instance.
+     * @param view The console view instance.
+     */
     public GameController(Game game, ConsoleView view) {
         this.game = game;
         this.view = view;
@@ -24,10 +41,19 @@ public class GameController {
         this.dealerStrategy = new SafeStrategy();
     }
 
+    /**
+     * Updates the strategy used by the dealer during their turn.
+     * * @param strategy The new {@link DealerStrategy} to be implemented.
+     */
     public void setDealerStrategy(DealerStrategy strategy) {
         this.dealerStrategy = strategy;
     }
 
+    /**
+     * Starts and maintains the main game loop. 
+     * Displays the welcome message and continues the game as long as the 
+     * player has a positive balance and chooses to keep playing.
+     */
     public void run() {
         view.displayMessage("=== Welcome to Lebron Black Jack! ===");
         view.displayMessage("Goal: Get to 23. Don't bust!");
@@ -63,6 +89,10 @@ public class GameController {
         game.getCollection().display();
     }
 
+    /**
+     * Opens the shop interface, allowing the player to view and purchase 
+     * PlayerCards/Buffs using their balance.
+     */
     private void openShop() {
         view.displayMessage("\n=== SHOP === (Balance: $" + game.getPlayer().getBalance() + ")");
         view.displayMessage("Available cards:");
@@ -96,6 +126,17 @@ public class GameController {
         }
     }
 
+    /**
+     * Executes a single round of Black Jack.
+     * This includes:
+     * <ul>
+     * <li>Taking a bet</li>
+     * <li>Processing pre-round buffs (e.g., Insurance)</li>
+     * <li>The player's turn (Hit, Stay, Boost, or Free Hit)</li>
+     * <li>The dealer's turn based on the current strategy</li>
+     * <li>Determining the winner and applying payouts/multipliers</li>
+     * </ul>
+     */
     private void playRound() {
         view.displayMessage("\nYour Balance: $" + game.getPlayer().getBalance());
 
@@ -131,7 +172,6 @@ public class GameController {
             view.displayMessage("\nYour Hand: " + game.getPlayer().getHand());
             view.displayMessage("Your Score: " + game.getPlayer().calculateScore());
 
-            // Show available buff options
             String options = "Hit or Stay? (h/s)";
             if (game.getCollection().hasUnusedBuff("SCORE_BOOST"))
                 options += " or Boost? (b)";
@@ -154,7 +194,7 @@ public class GameController {
                 int scoreBefore = game.getPlayer().calculateScore();
                 game.getPlayer().addCard(game.getDeck().draw());
                 view.displayMessage("Donovan Mitchell activated! Free hit — no bust risk.");
-                // If they would bust, undo the bust
+                
                 if (game.getPlayer().isBust()) {
                     game.getPlayer().removeScoreBoost(game.getPlayer().calculateScore() - scoreBefore);
                     view.displayMessage("Would have busted — Mitchell saved you! Score stays at " + scoreBefore);
@@ -183,7 +223,7 @@ public class GameController {
             game.getDealer().addCard(game.getDeck().draw());
         }
 
-        // Results — check for multiplier
+        // Results
         int pScore = game.getPlayer().calculateScore();
         int dScore = game.getDealer().calculateScore();
         view.displayMessage("Dealer Hand: " + game.getDealer().getHand());
