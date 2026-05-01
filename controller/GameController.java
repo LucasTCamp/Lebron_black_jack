@@ -1,11 +1,11 @@
 package controller;
 
+import java.util.Scanner;
 import model.Game;
 import model.PlayerCard;
 import model.strategy.DealerStrategy;
 import model.strategy.SafeStrategy;
 import view.ConsoleView;
-import java.util.Scanner;
 
 /**
  * The GameController class manages the primary game loop, user interactions, 
