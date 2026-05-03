@@ -47,7 +47,6 @@ The **Decorator Pattern** logic is used to manage the special abilities granted 
 
 ## Known Issues/Limitations
 
-* **Input Validation:** No protection against non-numeric inputs during betting phases.
 * **Persistence:** No save/load system; collection and balance are reset on program exit.
 
 ## AI Tool Usage
