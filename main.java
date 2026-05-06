@@ -4,7 +4,7 @@ import view.ConsoleView;
 
 /**
  * The entry point for the Lebron Black Jack application.
- * This class handles the initial setup (bootstrapping) of the Model, View, 
+ * This class handles the initial setup of the Model, View, 
  * and Controller components and starts the game's execution.
  * * @author Lucas & Masoud
  */
