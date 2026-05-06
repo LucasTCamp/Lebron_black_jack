@@ -4,8 +4,8 @@ package model;
  * Acts as the central controller for the game's model layer.
  * This class coordinates the interactions between the player, the dealer,
  * the deck, the shop, and the player's card collection.
- * * <p>It serves as the "brain" of the model, maintaining the state of the 
- * current match and providing access to the game's core components.</p>
+ * *It serves as the "brain" of the model, maintaining the state of the 
+ * current match and providing access to the game's core components.
  * * @author Lucas & Masoud
  */
 public class Game {
