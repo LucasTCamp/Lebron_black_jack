@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Acts as the Facade and central controller for the game's model layer.
+ * Acts as the central controller for the game's model layer.
  * This class coordinates the interactions between the player, the dealer,
  * the deck, the shop, and the player's card collection.
  * * <p>It serves as the "brain" of the model, maintaining the state of the 
@@ -40,12 +40,10 @@ public class Game {
     /**
      * Prepares the state for a new round of play.
      * This method:
-     * <ul>
-     * <li>Shuffles the deck if it is empty.</li>
-     * <li>Clears the hands of both the player and the dealer.</li>
-     * <li>Resets any active score boosts on the player.</li>
-     * <li>Deals two initial cards to both the player and the dealer.</li>
-     * </ul>
+     * Shuffles the deck if it is empty.
+     * <Clears the hands of both the player and the dealer.
+     * Resets any active score boosts on the player.
+     * Deals two initial cards to both the player and the dealer.
      */
     public void startRound() {
         if (deck.isEmpty()) deck.shuffle();

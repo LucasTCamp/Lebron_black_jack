@@ -43,7 +43,7 @@ public class Collection {
 
     /**
      * Filters the collection for unused cards of a specific buff category.
-     * * @param buffType The string identifier of the buff type (e.g., "INSURANCE").
+     * * @param buffType The string identifier of the buff type like ("INSURANCE").
      * @return A list of {@link PlayerCard} objects that match the type and are not yet used.
      */
     public List<PlayerCard> getAvailableBuffs(String buffType) {
@@ -81,10 +81,7 @@ public class Collection {
 
     /**
      * Resets the usage status of buffs between rounds.
-     * <p>
-     * <i>Note: Implementation is currently a placeholder for per-round 
-     * logic vs permanent cards.</i>
-     * </p>
+     * logic vs permanent cards.
      */
     public void resetBuffs() {
         for (PlayerCard c : owned) {

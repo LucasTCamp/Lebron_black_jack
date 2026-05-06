@@ -2,11 +2,9 @@ package model;
 
 /**
  * Represents a collectible NBA player card that provides unique gameplay advantages (buffs).
- * <p>
  * Each card has a purchase price, a flavor description, and a specific buff type 
  * that can be triggered during a round. Once a card's buff is consumed, it is 
  * marked as used.
- * </p>
  * * @author Lucas & Masoud
  */
 public class PlayerCard {

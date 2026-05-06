@@ -39,7 +39,7 @@ public class Card {
     /**
      * Returns a string representation of the card.
      * If the rank is "King", it is displayed as "Lebron".
-     * * @return A formatted string (e.g., "Lebron of Hearts" or "7 of Spades").
+     * * @return A formatted string ("Lebron of Hearts" or "7 of Spades").
      */
     @Override
     public String toString() {

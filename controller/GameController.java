@@ -129,13 +129,11 @@ public class GameController {
     /**
      * Executes a single round of Black Jack.
      * This includes:
-     * <ul>
-     * <li>Taking a bet</li>
-     * <li>Processing pre-round buffs (e.g., Insurance)</li>
-     * <li>The player's turn (Hit, Stay, Boost, or Free Hit)</li>
-     * <li>The dealer's turn based on the current strategy</li>
-     * <li>Determining the winner and applying payouts/multipliers</li>
-     * </ul>
+     * Taking a bet
+     * Processing pre-round buffs (e.g., Insurance)
+     * The player's turn (Hit, Stay, Boost, or Free Hit)
+     * The dealer's turn based on the current strategy
+     * Determining the winner and applying payouts/multipliers
      */
     private void playRound() {
         view.displayMessage("\nYour Balance: $" + game.getPlayer().getBalance());

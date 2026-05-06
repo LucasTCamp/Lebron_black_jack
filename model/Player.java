@@ -6,11 +6,9 @@ import java.util.List;
 /**
  * Represents a participant in the game, which can be either a human player 
  * or a dealer. 
- * <p>
  * This class manages the player's hand, financial balance, and specific 
  * scoring mechanics, including handling Aces and the custom bust 
  * threshold of 23.
- * </p>
  * * @author Lucas & Masoud
  */
 public class Player {
@@ -50,11 +48,9 @@ public class Player {
     /**
      * Calculates the player's total score based on the cards in their hand 
      * and any active score boosts.
-     * <p>
      * Follows standard Black Jack Ace logic adapted for a target of 23:
      * Aces are valued at 11 unless they cause the score to exceed 23, 
      * in which case they are valued at 1.
-     * </p>
      * * @return The calculated point total.
      */
     public int calculateScore() {

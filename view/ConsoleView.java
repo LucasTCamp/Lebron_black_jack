@@ -2,11 +2,9 @@ package view;
 
 /**
  * The view component of the application responsible for text-based output.
- * <p>
  * This class abstracts the console output mechanism, allowing the controller 
  * to send information to the user without needing direct access to 
  * {@code System.out}.
- * </p>
  * * @author Lucas & Masoud
  */
 public class ConsoleView {

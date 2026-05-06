@@ -3,11 +3,9 @@ package model.strategy;
 /**
  * A conservative implementation of the {@link DealerStrategy}.
  * Under this strategy, the dealer hits only when their score is below 18.
- * <p>
  * This approach prioritizes safety by reducing the likelihood of 
  * busting, though it may result in lower scores compared to more 
  * aggressive strategies.
- * </p>
  * * @author Lucas & Masoud
  */
 public class SafeStrategy implements DealerStrategy {
